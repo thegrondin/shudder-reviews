@@ -1,3 +1,2 @@
-import { App } from './lib/app';
-
-new App().render();
+// eslint-disable-next-line no-console
+console.log('popup');

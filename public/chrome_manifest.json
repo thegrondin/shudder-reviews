@@ -1,10 +1,8 @@
 {
-  "name": "datetime",
-  "version": "1.0",
-  "description": "Build a Datetime Extension!",
-  "permissions": [
-    "declarativeContent"
-  ],
+  "name": "Rotten Tomatoes for Shudder",
+  "version": "0.0.1",
+  "description": "none",
+  "permissions": ["declarativeContent"],
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"

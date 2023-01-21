@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.review-card img {
+  filter: blur(0px) !important;
+}
+
+.review-card {
+  left: calc(100% - 3.5rem);
+  max-height: 2.2rem;
+  transition: max-height 0.5s linear 0.5s, left 0.5s linear 0.5s;
+  overflow: hidden;
+}
+
+.review-card .review-section {
+  transition: opacity 0.3s;
+  transition-delay: 0.5s;
+}
+
+.review-card:hover {
+  left: 0;
+  max-height: 100%;
+  transition-delay: 0s;
+}
+
+.review-card:hover .review-section {
+  opacity: 100%;
+}
+
+img.review-logo {
+  width: 40%;
+}
+
+.rottentomato-review-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/*.movie-card__overlay {
+  opacity: 100% !important;
+  visibility: visible !important;
+}*/
+
+.bg-rotten-tomatoes {
+  background-color: rgb(127 29 29);
+}
+
+.review-section progress::-webkit-progress-bar {
+  background-color: rgb(75 85 99);
+}
+
+/* color progress bar red on firefox */
+.review-section progress::-moz-progress-bar {
+  background-color: #a94242;
+}
+
+.text-xxs {
+  font-size: 0.75rem;
+}
+
+.text-xxxs {
+  font-size: 0.5rem;
+}
+
+.score-progress {
+  line-height: 0;
+}
+
+.score-tooltip {
+  transition: transform 0.5s ease-in-out;
+}

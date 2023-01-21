@@ -1,42 +1,39 @@
 {
-  "name": "web-extension-boilerplate",
-  "version": "2.1.0",
-  "description": "Web extension boilerplate",
+  "name": "rotten-tomatoes-for-shudder",
+  "version": "0.0.1",
+  "description": "",
   "main": "background.js",
   "scripts": {
     "code:lint": "eslint '**/**/*.{ts,tsx}'",
     "code:lint-fix": "eslint --fix",
     "code:prettier": "prettier --write",
     "code:typecheck": "./node_modules/.bin/tsc --noEmit",
+
+    "app:dev:cross-env": "cross-env BROWSER='$BROWSER' webpack --config webpack/webpack.dev.js --watch",
+    "app:dev:tailwind": "pnpm tailwindcss -i ./src/input.css -o ./src/output.css --watch",
+    "app:dev:web-ext": "cd dist; web-ext run; cd ..",
+    
+    "app:dev": "stmux -w always -e ERROR -m beep,system -- [ [ \"pnpm app:dev:cross-env\" .. \"pnpm app:dev:tailwind\" ] : -s 1/3 -f \"pnpm app:dev:web-ext\" ]",
+
+    "app:dev:chrome" : "BROWSER='chrome' pnpm app:dev",
+    "app:dev:edge" : "BROWSER='edge' pnpm app:dev",
+    "app:dev:firefox" : "BROWSER='firefox' pnpm app:dev",
+
     "app:chrome": "rimraf dist && cross-env BROWSER='chrome' webpack --config webpack/webpack.prod.js",
-    "app:chrome-dev": "cross-env BROWSER='chrome' webpack --config webpack/webpack.dev.js --watch",
     "app:edge": "rimraf dist && cross-env BROWSER='edge' webpack --config webpack/webpack.prod.js",
-    "app:edge-dev": "cross-env BROWSER='edge' webpack --config webpack/webpack.dev.js --watch",
     "app:firefox": "rimraf dist && cross-env BROWSER='firefox' webpack --config webpack/webpack.prod.js",
-    "app:firefox-dev": "cross-env BROWSER='firefox' webpack --config webpack/webpack.dev.js --watch",
+
     "lint-staged": "lint-staged",
     "test:unit": "jest"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/davidnguyen179/web-extension-boilerplate.git"
-  },
   "keywords": [
-    "chrome extension",
-    "microsoft edge extension",
-    "firefox addon",
+    "rotten tomatoes",
+    "shudder",
     "web extension",
-    "typescript",
-    "ts",
-    "jest",
-    "sinon"
+    "movie reviews"
   ],
-  "author": "David Nguyen <dzungnguyen179@gmail.com> (dzungnguyen179@gmail.com)",
+  "author": "Thomas Dion-Grondin",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/davidnguyen179/web-extension-boilerplate/issues"
-  },
-  "homepage": "https://github.com/davidnguyen179/web-extension-boilerplate#readme",
   "devDependencies": {
     "@babel/core": "7.12.17",
     "@babel/preset-env": "7.12.11",
@@ -52,12 +49,16 @@
     "cross-env": "7.0.3",
     "eslint": "7.21.0",
     "eslint-plugin-import": "2.22.1",
+    "html-loader": "^4.2.0",
     "husky": "^8.0.1",
     "jest": "26.6.3",
     "lint-staged": "^13.0.3",
     "prettier": "2.2.1",
+    "raw-loader": "^4.0.2",
     "rimraf": "3.0.2",
     "sinon": "^10.0.0",
+    "stmux": "^1.8.5",
+    "tailwindcss": "^3.2.4",
     "terser-webpack-plugin": "5.1.1",
     "ts-jest": "26.4.4",
     "ts-loader": "^9.1.1",
@@ -73,5 +74,8 @@
       "pnpm code:lint-fix",
       "pnpm code:prettier"
     ]
+  },
+  "dependencies": {
+    "tw-elements": "1.0.0-alpha13"
   }
 }
