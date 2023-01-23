@@ -1,16 +1,16 @@
 import ReviewCardSmall from '../components/ReviewCardSmall';
-import { rottenTomatoesSummaryScraper, TomatoReview } from '../lib/scrapers/rottentomatoes-scraper';
+import TomatoScraper, { TomatoResult } from '../lib/scrapers/rottentomatoes-scraper';
 
 interface Route {
   uri: string;
-  scraper: (title: string) => Promise<void | TomatoReview>;
-  component: (review: TomatoReview) => HTMLElement;
+  scraper: (title: string) => Promise<void | TomatoResult>;
+  component: (scraper, card) => HTMLElement;
 }
 
 const uriComponentMapping = [
   {
     uris: ['https://www.shudder.com/movies'],
-    scraper: rottenTomatoesSummaryScraper,
+    scraper: TomatoScraper.scrapeSummary,
     component: ReviewCardSmall,
   },
 ];

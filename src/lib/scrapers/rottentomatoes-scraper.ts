@@ -9,13 +9,18 @@ interface SearchResult {
 }
 
 interface Review {
-  tomatoMeter: number;
-  tomatoMeterIcon: string;
-  audience: number;
-  audienceIcon: string;
+  score: number;
+  icon: string;
+  count: number;
 }
 
-const scrapeSearchResults = (rawData: string): SearchResult[] => {
+interface TomatoResult {
+  tomatoMeter: Review;
+  audience: Review;
+  link: string;
+}
+
+const scrapeSearch = (rawData: string): SearchResult[] => {
   const body = new DOMParser().parseFromString(rawData, 'text/html').body;
   const searchPageResults = body.querySelectorAll('search-page-result search-page-media-row');
   const searchResults: SearchResult[] = [];
@@ -35,7 +40,7 @@ const scrapeSearchResults = (rawData: string): SearchResult[] => {
   return searchResults;
 };
 
-const scrapeReview = (rawData: string): Review => {
+const scrapeResult = (rawData: string): TomatoResult => {
   const body = new DOMParser().parseFromString(rawData, 'text/html').body;
 
   const scoreBoardAttributes = body.querySelector('score-board').attributes;
@@ -44,12 +49,19 @@ const scrapeReview = (rawData: string): Review => {
   const audience = parseInt(scoreBoardAttributes.getNamedItem('audiencescore').value);
 
   return {
-    tomatoMeter,
-    tomatoMeterIcon:
-      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-fresh.149b5e8adc3.svg',
-    audience,
-    audienceIcon:
-      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-rotten.f1ef4f02ce3.svg',
+    tomatoMeter: {
+      score: tomatoMeter,
+      icon:
+        'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-fresh.149b5e8adc3.svg',
+      count: 0,
+    } as Review,
+    audience: {
+      score: audience,
+      icon:
+        'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-rotten.f1ef4f02ce3.svg',
+      count: 0,
+    } as Review,
+    link: '',
   };
 };
 
@@ -58,29 +70,34 @@ const searchScraper = async (term: string): Promise<void | SearchResult[]> => {
   try {
     const response = await fetch(`${SEARCH_URI}${term}`);
     const raw = await response.text();
-    return scrapeSearchResults(raw);
+    return scrapeSearch(raw);
   } catch (err) {
     log(err);
   }
 };
 
-const reviewScraper = async (href: string): Promise<void | Review> => {
+const resultScraper = async (href: string): Promise<void | TomatoResult> => {
   try {
     const response = await fetch(href);
     const raw = await response.text();
-    return scrapeReview(raw);
+    return scrapeResult(raw);
   } catch (err) {
     log(err);
   }
 };
 
-const rottenTomatoesSummaryScraper = async (title: string): Promise<void | Review> => {
+const scrapeSummary = async (title: string): Promise<void | TomatoResult> => {
   const searchResult = searchScraper(title);
-
   const results = await searchResult;
+  log(title);
+  log(results);
   const result = results[0];
-  return await reviewScraper(result.link);
+  return await resultScraper(result.link);
 };
 
-export { searchScraper, reviewScraper, rottenTomatoesSummaryScraper };
-export type { SearchResult as TomatoSearchResult, Review as TomatoReview };
+const TomatoScraper = {
+  scrapeSummary,
+};
+
+export default TomatoScraper;
+export type { SearchResult as TomatoSearchResult, Review, TomatoResult };

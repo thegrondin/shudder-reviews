@@ -6,15 +6,11 @@ tailwind.appendTailwindToHead(document);
 const route: Route = RouteUtility.getRoute(RouteUtility.getCurrentURL());
 
 if (route) {
-  const component = route.component({
-    tomatoMeter: 85,
-    tomatoMeterIcon:
-      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-fresh.149b5e8adc3.svg',
-    audience: 30,
-    audienceIcon:
-      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-rotten.f1ef4f02ce3.svg',
-  });
+  const overlays = document.querySelectorAll('.movie-card-wrapper');
 
-  const overlay = document.querySelector('.movie-card__overlay');
-  overlay.prepend(component);
+  for (const element of overlays as NodeListOf<HTMLElement>) {
+    const component = route.component(route.scraper, element);
+
+    element.querySelector('.movie-card__overlay').prepend(component);
+  }
 }
