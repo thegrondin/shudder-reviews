@@ -19,7 +19,9 @@ const getCurrentURL = (): string => {
 
 const getRoute = (uri: string, mapping: UriComponentMapping[]) => {
   const target = mapping.find((m) => {
-    return m.uris.includes(uri);
+    return m.uris.find((u) => {
+      return uri.startsWith(u);
+    });
   });
 
   return {
