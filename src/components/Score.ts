@@ -9,10 +9,12 @@ const Score = (review?: Review): HTMLElement => {
     const scoreProgress: HTMLElement = score.querySelector('.score-progress progress');
     const scoreTooltip: HTMLElement = score.querySelector('.score-tooltip p');
     const scoreIcon: HTMLElement = score.querySelector('img');
+    const scoreCount: HTMLElement = score.querySelector('.score-count');
 
     scoreProgress.setAttribute('value', review.score.toString());
     scoreTooltip.innerText = `${review.score}%`;
     scoreIcon.setAttribute('src', review.icon);
+    scoreCount.innerText = `${review.count.toString()} reviews`;
   };
 
   const positionToolTip = (score: HTMLElement) => {

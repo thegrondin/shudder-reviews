@@ -10,6 +10,16 @@ interface TomatoSearchResult {
 class TomatoScraper implements Scraper {
   private searchUri: string;
 
+  private static readonly TOMATO_ICONS = {
+    fresh: 'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-fresh.149b5e8adc3.svg',
+    rotten:
+      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-rotten.f1ef4f02ce3.svg',
+    'certified-fresh':
+      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/certified_fresh.75211285dbb.svg',
+    noScore:
+      'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-empty.cd930dab34a.svg',
+  };
+
   constructor(searchUri: string) {
     this.searchUri = searchUri;
   }
@@ -39,24 +49,39 @@ class TomatoScraper implements Scraper {
 
     const scoreBoardAttributes = body.querySelector('score-board').attributes;
 
-    const tomatoMeter = parseInt(scoreBoardAttributes.getNamedItem('tomatometerscore').value);
-    const audience = parseInt(scoreBoardAttributes.getNamedItem('audiencescore').value);
+    const tomatoMeterScore = parseInt(scoreBoardAttributes.getNamedItem('tomatometerscore').value);
+    const audienceScore = parseInt(scoreBoardAttributes.getNamedItem('audiencescore').value);
+
+    const tomatoMeterState = scoreBoardAttributes.getNamedItem('tomatometerstate').value;
+    const tomatoMeterIcon = TomatoScraper.TOMATO_ICONS[tomatoMeterState] || TomatoScraper.TOMATO_ICONS.noScore;
+
+    const tomatoMeterReviewCount = parseInt(
+      body.querySelector('score-board a.scoreboard__link--tomatometer').textContent.replace(/\D/g, '')
+    );
+    const audienceReviewCount = parseInt(
+      body.querySelector('score-board a.scoreboard__link--audience').textContent.replace(/\D/g, '')
+    );
+
+    let audienceIcon = TomatoScraper.TOMATO_ICONS.noScore;
+    if (audienceScore > 60) {
+      audienceIcon = TomatoScraper.TOMATO_ICONS.fresh;
+    } else if (audienceScore > 0) {
+      audienceIcon = TomatoScraper.TOMATO_ICONS.rotten;
+    }
 
     return {
       reviews: [
         {
           name: 'TomatoMeter',
-          score: tomatoMeter,
-          icon:
-            'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-fresh.149b5e8adc3.svg',
-          count: 0,
+          score: tomatoMeterScore,
+          icon: tomatoMeterIcon,
+          count: tomatoMeterReviewCount,
         } as Review,
         {
           name: 'Audience',
-          score: audience,
-          icon:
-            'https://www.rottentomatoes.com/assets/pizza-pie/images/icons/tomatometer/tomatometer-rotten.f1ef4f02ce3.svg',
-          count: 0,
+          score: audienceScore,
+          icon: audienceIcon,
+          count: audienceReviewCount,
         } as Review,
       ],
       link: 'https://www.rottentomatoes.com/',
