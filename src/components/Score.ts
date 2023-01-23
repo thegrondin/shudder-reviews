@@ -6,9 +6,9 @@ const score = require('./score.html');
 
 const Score = (review?: Review): HTMLElement => {
   const apply = (review: Review, score: HTMLElement) => {
-    const scoreProgress = score.querySelector('.score-progress progress') as HTMLElement;
-    const scoreTooltip = score.querySelector('.score-tooltip p') as HTMLElement;
-    const scoreIcon = score.querySelector('img') as HTMLElement;
+    const scoreProgress: HTMLElement = score.querySelector('.score-progress progress');
+    const scoreTooltip: HTMLElement = score.querySelector('.score-tooltip p');
+    const scoreIcon: HTMLElement = score.querySelector('img');
 
     scoreProgress.setAttribute('value', review.score.toString());
     scoreTooltip.innerText = `${review.score}%`;
@@ -16,19 +16,19 @@ const Score = (review?: Review): HTMLElement => {
   };
 
   const positionToolTip = (score: HTMLElement) => {
-    const scoreProgress = score.querySelector('.score-progress progress') as any;
-    const scoreTooltip = score.querySelector('.score-tooltip') as HTMLElement;
+    const scoreProgress: HTMLElement = score.querySelector('.score-progress progress');
+    const scoreTooltip: HTMLElement = score.querySelector('.score-tooltip');
 
-    const value = scoreProgress.value - (scoreTooltip.offsetWidth / score.offsetWidth) * 100;
+    const value = parseInt(scoreProgress.getAttribute('value')) - (scoreTooltip.offsetWidth / score.offsetWidth) * 100;
     const translation = scoreProgress.offsetWidth * (value / 100);
 
     scoreTooltip.style.transform = `translate(${translation}px)`;
   };
 
-  const scoreContainer = document.createElement('div');
+  const scoreContainer: HTMLElement = document.createElement('div');
   scoreContainer.innerHTML = score.default;
 
-  const scoreElement = scoreContainer.querySelector('.score') as HTMLElement;
+  const scoreElement: HTMLElement = scoreContainer.querySelector('.score');
 
   if (review) {
     apply(review, scoreElement);
@@ -40,7 +40,7 @@ const Score = (review?: Review): HTMLElement => {
     });
   }
 
-  return scoreElement as HTMLElement;
+  return scoreElement;
 };
 
 export default Score;

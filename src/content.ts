@@ -1,17 +1,27 @@
+import ReviewCardSmall from './components/ReviewCardSmall';
+import TomatoScraper from './lib/scrapers/rottentomatoes-scraper';
 import RouteUtility, { Route } from './utils/RouteUtility';
 import { tailwind } from './utils/tailwind';
 
 tailwind.appendTailwindToHead(document);
 
-const route: Route = RouteUtility.getRoute(RouteUtility.getCurrentURL());
+const uriComponentMapping = [
+  {
+    uris: ['https://www.shudder.com/movies'],
+    scraper: TomatoScraper.scrapeSummary,
+    component: ReviewCardSmall,
+  },
+];
+
+const route: Route = RouteUtility.getRoute(RouteUtility.getCurrentURL(), uriComponentMapping);
 
 if (route) {
-  const overlays = document.querySelectorAll('.movie-card-wrapper');
+  const cardWrapper: NodeListOf<HTMLElement> = document.querySelectorAll('.movie-card-wrapper');
 
-  for (const element of overlays as NodeListOf<HTMLElement>) {
-    const title = JSON.parse(element.getAttribute('data-track-set'))['Media Title'];
+  for (const wrapper of cardWrapper) {
+    const title: string = JSON.parse(wrapper.getAttribute('data-track-set'))['Media Title'];
     const component = route.component(route.scraper, title);
 
-    element.querySelector('.movie-card__overlay').prepend(component);
+    wrapper.querySelector('.movie-card__overlay').prepend(component);
   }
 }

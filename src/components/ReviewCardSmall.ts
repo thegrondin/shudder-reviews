@@ -4,7 +4,7 @@ import Score from './Score';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const reviewCard = require('./reviewCard.html');
 
-const ReviewCardSmall = (scraper, title): HTMLElement => {
+const ReviewCardSmall = (scraper: (title: string) => Promise<void | TomatoResult>, title: string): HTMLElement => {
   const handleHover = (reviewSection: HTMLElement) => {
     const result: Promise<void | TomatoResult> = scraper(title);
 
@@ -20,7 +20,7 @@ const ReviewCardSmall = (scraper, title): HTMLElement => {
     });
   };
 
-  const reviewCardContainer = document.createElement('div');
+  const reviewCardContainer: HTMLElement = document.createElement('div');
 
   reviewCardContainer.innerHTML = reviewCard.default;
 

@@ -1,27 +1,24 @@
-import ReviewCardSmall from '../components/ReviewCardSmall';
-import TomatoScraper, { TomatoResult } from '../lib/scrapers/rottentomatoes-scraper';
+import { TomatoResult } from '../lib/scrapers/rottentomatoes-scraper';
 
 interface Route {
   uri: string;
   scraper: (title: string) => Promise<void | TomatoResult>;
-  component: (scraper, title) => HTMLElement;
+  component: (scraper: (title: string) => Promise<void | TomatoResult>, title: string) => HTMLElement;
 }
 
-const uriComponentMapping = [
-  {
-    uris: ['https://www.shudder.com/movies'],
-    scraper: TomatoScraper.scrapeSummary,
-    component: ReviewCardSmall,
-  },
-];
+interface UriComponentMapping {
+  uris: string[];
+  scraper: (title: string) => Promise<void | TomatoResult>;
+  component: (scraper: (title: string) => Promise<void | TomatoResult>, title: string) => HTMLElement;
+}
 
-const getCurrentURL = () => {
+const getCurrentURL = (): string => {
   return window.location.href;
 };
 
-const getRoute = (uri) => {
-  const target = uriComponentMapping.find((mapping) => {
-    return mapping.uris.includes(uri);
+const getRoute = (uri: string, mapping: UriComponentMapping[]) => {
+  const target = mapping.find((m) => {
+    return m.uris.includes(uri);
   });
 
   return {
