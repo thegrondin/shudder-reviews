@@ -1,4 +1,4 @@
-import { Review } from '../lib/scrapers/rottentomatoes-scraper';
+import { Review } from '../lib/scrapers/Scraper';
 import Utils from '../utils/Utils';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

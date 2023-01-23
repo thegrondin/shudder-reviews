@@ -1,5 +1,5 @@
 import ReviewCardSmall from './components/ReviewCardSmall';
-import TomatoScraper from './lib/scrapers/rottentomatoes-scraper';
+import TomatoScraper from './lib/scrapers/TomatoScraper';
 import RouteUtility, { Route } from './utils/RouteUtility';
 import { tailwind } from './utils/tailwind';
 
@@ -8,7 +8,7 @@ tailwind.appendTailwindToHead(document);
 const uriComponentMapping = [
   {
     uris: ['https://www.shudder.com/movies'],
-    scraper: TomatoScraper.scrapeSummary,
+    scraper: TomatoScraper,
     component: ReviewCardSmall,
   },
 ];

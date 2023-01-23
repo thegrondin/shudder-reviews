@@ -1,8 +1,8 @@
-import { TomatoResult } from '../lib/scrapers/rottentomatoes-scraper';
+import { Scraper } from '../lib/scrapers/Scraper';
 
 interface MappingBase {
-  scraper: (title: string) => Promise<void | TomatoResult>;
-  component: (scraper: (title: string) => Promise<void | TomatoResult>, title: string) => HTMLElement;
+  scraper: new (name: string) => Scraper;
+  component: (scraper: new (name: string) => Scraper, title: string) => HTMLElement;
 }
 
 interface Route extends MappingBase {
