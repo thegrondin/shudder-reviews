@@ -1,15 +1,16 @@
 import { TomatoResult } from '../lib/scrapers/rottentomatoes-scraper';
 
-interface Route {
-  uri: string;
+interface MappingBase {
   scraper: (title: string) => Promise<void | TomatoResult>;
   component: (scraper: (title: string) => Promise<void | TomatoResult>, title: string) => HTMLElement;
 }
 
-interface UriComponentMapping {
+interface Route extends MappingBase {
+  uri: string;
+}
+
+interface UriComponentMapping extends MappingBase {
   uris: string[];
-  scraper: (title: string) => Promise<void | TomatoResult>;
-  component: (scraper: (title: string) => Promise<void | TomatoResult>, title: string) => HTMLElement;
 }
 
 const getCurrentURL = (): string => {
