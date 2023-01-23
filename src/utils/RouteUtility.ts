@@ -4,7 +4,7 @@ import TomatoScraper, { TomatoResult } from '../lib/scrapers/rottentomatoes-scra
 interface Route {
   uri: string;
   scraper: (title: string) => Promise<void | TomatoResult>;
-  component: (scraper, card) => HTMLElement;
+  component: (scraper, title) => HTMLElement;
 }
 
 const uriComponentMapping = [

@@ -9,7 +9,8 @@ if (route) {
   const overlays = document.querySelectorAll('.movie-card-wrapper');
 
   for (const element of overlays as NodeListOf<HTMLElement>) {
-    const component = route.component(route.scraper, element);
+    const title = JSON.parse(element.getAttribute('data-track-set'))['Media Title'];
+    const component = route.component(route.scraper, title);
 
     element.querySelector('.movie-card__overlay').prepend(component);
   }

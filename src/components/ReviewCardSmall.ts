@@ -4,17 +4,8 @@ import Score from './Score';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const reviewCard = require('./reviewCard.html');
 
-const ReviewCardSmall = (scraper, card): HTMLElement => {
-  const reviewCardContainer = document.createElement('div');
-
-  reviewCardContainer.innerHTML = reviewCard.default;
-
-  const reviewSection = reviewCardContainer.querySelector('.review-section');
-  reviewSection.appendChild(Score());
-  reviewSection.appendChild(Score());
-
-  reviewCardContainer.addEventListener('mouseenter', () => {
-    const title = JSON.parse(card.getAttribute('data-track-set'))['Media Title'];
+const ReviewCardSmall = (scraper, title): HTMLElement => {
+  const handleHover = (reviewSection: HTMLElement) => {
     const result: Promise<void | TomatoResult> = scraper(title);
 
     result.then((r?: TomatoResult) => {
@@ -27,6 +18,22 @@ const ReviewCardSmall = (scraper, card): HTMLElement => {
       reviewSection.appendChild(Score(r.tomatoMeter));
       reviewSection.appendChild(Score(r.audience));
     });
+  };
+
+  const reviewCardContainer = document.createElement('div');
+
+  reviewCardContainer.innerHTML = reviewCard.default;
+
+  const reviewSection: HTMLElement = reviewCardContainer.querySelector('.review-section');
+  reviewSection.appendChild(Score());
+  reviewSection.appendChild(Score());
+
+  reviewCardContainer.removeEventListener('mouseenter', () => {
+    handleHover(reviewSection);
+  });
+
+  reviewCardContainer.addEventListener('mouseenter', () => {
+    handleHover(reviewSection);
   });
 
   return reviewCardContainer;
