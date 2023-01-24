@@ -2,7 +2,8 @@ import { Scraper } from '../lib/scrapers/Scraper';
 
 interface MappingBase {
   scraper: new (name: string) => Scraper;
-  component: (scraper: new (name: string) => Scraper, title: string) => HTMLElement;
+  component: (scraper: new (name: string) => Scraper, wrapper: string) => HTMLElement;
+  linker: (component) => void;
 }
 
 interface Route extends MappingBase {
@@ -28,6 +29,7 @@ const getRoute = (uri: string, mapping: UriComponentMapping[]) => {
     uri,
     scraper: target.scraper,
     component: target.component,
+    linker: target.linker,
   } as Route;
 };
 

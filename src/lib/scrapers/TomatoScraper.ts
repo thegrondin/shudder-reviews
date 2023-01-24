@@ -89,7 +89,6 @@ class TomatoScraper implements Scraper {
   };
 
   private searchScraper = async (term: string): Promise<void | TomatoSearchResult[]> => {
-    log(`${this.searchUri}${term}`);
     try {
       const response = await fetch(`${this.searchUri}${term}`);
       const raw = await response.text();
@@ -112,8 +111,6 @@ class TomatoScraper implements Scraper {
   public async getResult(title: string): Promise<void | ScrapeResult> {
     const searchResult = this.searchScraper(title);
     const results = await searchResult;
-    log(title);
-    log(results);
     const result = results[0];
     return await this.resultScraper(result.link);
   }
