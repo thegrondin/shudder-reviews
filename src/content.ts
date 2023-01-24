@@ -12,7 +12,7 @@ const uriComponentMapping: UriComponentMapping[] = [
     scraper: TomatoScraper,
     component: ReviewCardLarge,
     linker: (component, scraper) => {
-      const movieDescription: HTMLElement = document.querySelector('.detail-page__description');
+      const movieDescription: HTMLElement = document.querySelector('.detail-page__info');
       movieDescription.appendChild(component(scraper, 'Let the Wrong One In'));
     },
   },
