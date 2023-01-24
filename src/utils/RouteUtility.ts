@@ -2,8 +2,11 @@ import { Scraper } from '../lib/scrapers/Scraper';
 
 interface MappingBase {
   scraper: new (name: string) => Scraper;
-  component: (scraper: new (name: string) => Scraper, wrapper: string) => HTMLElement;
-  linker: (component) => void;
+  component: (scraper: new (name: string) => Scraper, title: string) => HTMLElement;
+  linker: (
+    component: (scraper: new (name: string) => Scraper, title: string) => HTMLElement,
+    scraper: new (name: string) => Scraper
+  ) => void;
 }
 
 interface Route extends MappingBase {
@@ -39,4 +42,4 @@ const RouteUtility = {
 };
 
 export default RouteUtility;
-export type { Route };
+export type { Route, UriComponentMapping };
